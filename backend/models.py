@@ -23,7 +23,7 @@ class User(Base):
     password = Column(String, nullable=False)
     department = Column(String, nullable=False)
     role = Column(Enum(UserRole), default=UserRole.employee, nullable=False)
-    joined_at = Column(DateTime(timezone=True), server_default=func.now(timezone.utc))
+    joined_at = Column(DateTime(timezone=True), server_default=func.now())
     profile_picture_url = Column(String, nullable=True)
     
     sent_shoutouts = relationship("ShoutOut", foreign_keys="ShoutOut.sender_id", back_populates="sender")
