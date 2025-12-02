@@ -48,52 +48,65 @@ api.interceptors.response.use(
 );
 
 export const authAPI = {
-  register: (data) => api.post('/auth/register', data),
-  login: (data) => api.post('/auth/login', data),
-  getMe: () => api.get('/auth/me'),
+  register: (data) => api.post('/api/auth/register', data),
+  login: (data) => api.post('/api/auth/login', data),
+  getMe: () => api.get('/api/auth/me'),
 };
 
+
 export const usersAPI = {
-  getUsers: (department) => api.get('/users', { params: { department } }),
-  getUser: (id) => api.get(`/users/${id}`),
-  updateMe: (data) => api.patch('/users/me', data),
-  uploadProfilePicture: (data) => api.post('/users/me/picture', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }),
-  deleteProfilePicture: () => api.delete('/users/me/picture'),
-  getMyShoutouts: () => api.get('/users/me/shoutouts'),
-  getTaggedShoutouts: () => api.get('/users/me/tagged'),
-  deleteUser: (id) => api.delete(`/users/${id}`),
+  getUsers: (department) => api.get('/api/users', { params: { department } }),
+  getUser: (id) => api.get(`/api/users/${id}`),
+  updateMe: (data) => api.patch('/api/users/me', data),
+  uploadProfilePicture: (data) =>
+    api.post('/api/users/me/picture', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  deleteProfilePicture: () => api.delete('/api/users/me/picture'),
+  getMyShoutouts: () => api.get('/api/users/me/shoutouts'),
+  getTaggedShoutouts: () => api.get('/api/users/me/tagged'),
+  deleteUser: (id) => api.delete(`/api/users/${id}`),
 };
 
 export const shoutoutsAPI = {
-  create: (data) => api.post('/shoutouts', data),
-  getAll: (params) => api.get('/shoutouts', { params }),
-  getById: (id) => api.get(`/shoutouts/${id}`),
-  addComment: (id, content) => api.post(`/shoutouts/${id}/comments`, { content }),
-  toggleReaction: (id, type) => api.post(`/shoutouts/${id}/reactions`, { type }),
-  getShoutoutReactions: (id, params) => api.get(`/shoutouts/${id}/reactions`, { params }),
-  delete: (id) => api.delete(`/shoutouts/${id}`), // New general delete shoutout
-  deleteComment: (id) => api.delete(`/comments/${id}`), // New general delete comment
-  report: (shoutoutId, commentId, reason) => api.post('/reports', { shoutout_id: shoutoutId, comment_id: commentId, reason }),
+  create: (data) => api.post('/api/shoutouts', data),
+  getAll: (params) => api.get('/api/shoutouts', { params }),
+  getById: (id) => api.get(`/api/shoutouts/${id}`),
+  addComment: (id, content) =>
+    api.post(`/api/shoutouts/${id}/comments`, { content }),
+  toggleReaction: (id, type) =>
+    api.post(`/api/shoutouts/${id}/reactions`, { type }),
+  getShoutoutReactions: (id, params) =>
+    api.get(`/api/shoutouts/${id}/reactions`, { params }),
+  delete: (id) => api.delete(`/api/shoutouts/${id}`),
+  deleteComment: (id) => api.delete(`/api/comments/${id}`),
+  report: (shoutoutId, commentId, reason) =>
+    api.post('/api/reports', {
+      shoutout_id: shoutoutId,
+      comment_id: commentId,
+      reason,
+    }),
 };
 
 export const adminAPI = {
-  updateUserRole: (userId, role) => api.patch(`/users/${userId}/role`, null, { params: { role } }),
-  getStats: () => api.get('/admin/stats'),
-  getTopContributors: () => api.get('/admin/stats/top-contributors'),
-  getShoutoutsByDepartment: () => api.get('/admin/stats/shoutouts-by-department'),
-  getReports: (params) => api.get('/admin/reports', { params }), // NEW
+  updateUserRole: (userId, role) =>
+    api.patch(`/api/users/${userId}/role`, null, { params: { role } }),
+  getStats: () => api.get('/api/admin/stats'),
+  getTopContributors: () =>
+    api.get('/api/admin/stats/top-contributors'),
+  getShoutoutsByDepartment: () =>
+    api.get('/api/admin/stats/shoutouts-by-department'),
+  getReports: (params) => api.get('/api/admin/reports', { params }),
   updateReportStatus: (reportId, status) =>
-    api.patch(`/admin/reports/${reportId}/status`, { status }),
+    api.patch(`/api/admin/reports/${reportId}/status`, { status }),
 };
 
+
 export const notificationsAPI = {
-  getNotifications: () => api.get('/notifications'),
-  markNotificationRead: (id) => api.post(`/notifications/${id}/read`),
-  markAllNotificationsRead: () => api.post('/notifications/mark-all-read'),
+  getNotifications: () => api.get('/api/notifications'),
+  markNotificationRead: (id) => api.post(`/api/notifications/${id}/read`),
+  markAllNotificationsRead: () =>
+    api.post('/api/notifications/mark-all-read'),
 };
 
 export default api;
