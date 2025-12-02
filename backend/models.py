@@ -38,7 +38,7 @@ class ShoutOut(Base):
     id = Column(Integer, primary_key=True, index=True)
     sender_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     message = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     sender = relationship("User", foreign_keys=[sender_id], back_populates="sent_shoutouts")
     recipients = relationship("ShoutOutRecipient", back_populates="shoutout", cascade="all, delete-orphan")
@@ -62,7 +62,7 @@ class Comment(Base):
     shoutout_id = Column(Integer, ForeignKey("shoutouts.id"), nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     content = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     shoutout = relationship("ShoutOut", back_populates="comments")
     user = relationship("User", back_populates="comments")
@@ -97,7 +97,7 @@ class Report(Base):
     comment_id = Column(Integer, ForeignKey("comments.id"), nullable=True) # New field
     reporter_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     reason = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(Enum(ReportStatus), default=ReportStatus.pending, nullable=False)
 
     __table_args__ = (
@@ -120,7 +120,7 @@ class Notification(Base):
     message = Column(Text, nullable=False)
     shoutout_id = Column(Integer, ForeignKey("shoutouts.id"), nullable=True)
     is_read = Column(Boolean, default=False, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="notifications")
     shoutout = relationship("ShoutOut")
