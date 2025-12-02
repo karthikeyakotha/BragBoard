@@ -32,8 +32,8 @@ origins = [
 # ✅ Correct CORS config
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,      # ❗ NOT ["*"]
-    allow_credentials=True,
+    allow_origins=["*"],      # allow all origins
+    allow_credentials=False,  # important: False when using "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
