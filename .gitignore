@@ -52,6 +52,5 @@ Thumbs.db
 *.log
 .cache/
 .temp/
-uploads/
 temp_repo/
 
