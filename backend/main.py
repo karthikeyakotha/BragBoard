@@ -51,7 +51,7 @@ def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     hashed_password = get_password_hash(user_data.password)
 
     user = models.User(
-        full_name=user_data.full_name,
+        name=user_data.name,
         email=user_data.email,
         password=hashed_password,   # store hashed password
         department=user_data.department,
