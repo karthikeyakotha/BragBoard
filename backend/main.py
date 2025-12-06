@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 from typing import List, Optional
+from seed_data import seed_everything
 from datetime import datetime
 import os
 import pytz
@@ -40,6 +41,14 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "BragBoard API is running", "docs": "/docs"}
+
+@app.post("/api/seed-db", tags=["Development"])
+def seed_database_endpoint(db: Session = Depends(get_db)):
+    """
+    CLICK THIS TO ADD DUMMY DATA.
+    Adds Alice, Bob, Charlie with password: password123
+    """
+    return seed_everything(db)
 
 @app.post("/api/auth/register", response_model=schemas.LoginResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
