@@ -24,10 +24,15 @@ app = FastAPI(title="BragBoard API", version="1.0.0")
 
 app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
+origins = [
+    "http://localhost:5173",          # Vite dev (local)
+    "https://brag-board.vercel.app",  # your Vercel frontend
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # allow all origins
-    allow_credentials=False,  
+    allow_origins=origins,
+    allow_credentials=True,          # you use Authorization token; this is OK
     allow_methods=["*"],
     allow_headers=["*"],
 )
