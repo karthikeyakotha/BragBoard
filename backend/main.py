@@ -5,13 +5,12 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 from typing import List, Optional
-from seed_data import seed_everything
 from datetime import datetime
 import os
 import pytz
 from PIL import Image
 import io
-
+from seed_data import seed_everything
 from backend import models, schemas
 from backend.database import engine, get_db, Base
 from backend.auth import (
@@ -45,8 +44,7 @@ def root():
 @app.post("/api/seed-db", tags=["Development"])
 def seed_database_endpoint(db: Session = Depends(get_db)):
     """
-    CLICK THIS TO ADD DUMMY DATA.
-    Adds Alice, Bob, Charlie with password: password123
+    Triggers the database seeding script.
     """
     return seed_everything(db)
 
