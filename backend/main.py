@@ -41,6 +41,18 @@ app.add_middleware(
 def root():
     return {"message": "BragBoard API is running", "docs": "/docs"}
 
+@app.delete("/api/debug/clear-all")
+def clear_all(db: Session = Depends(get_db)):
+    # Delete all shoutouts, comments, notifications FIRST (if you have foreign key constraints)
+    db.query(models.Report).delete()
+    db.query(models.Comment).delete()
+    db.query(models.Shoutout).delete()
+    db.query(models.Notification).delete()
+    db.query(models.User).delete()   # delete users last
+    
+    db.commit()
+    return {"detail": "ALL DATA DELETED"}
+
 @app.post("/api/auth/register", response_model=schemas.LoginResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
