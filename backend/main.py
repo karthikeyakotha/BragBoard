@@ -36,31 +36,33 @@ app.add_middleware(
 def root():
     return {"message": "BragBoard API is running", "docs": "/docs"}
 
-@app.post("/api/auth/register", response_model=schemas.Token, status_code=status.HTTP_201_CREATED)
+@app.post("/api/auth/register", response_model=schemas.LoginResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    
-    user_count = db.query(models.User).count()
-    user_role = models.UserRole.admin if user_count == 0 else models.UserRole.employee
-    
+
+    # hash the password BEFORE saving
     hashed_password = get_password_hash(user_data.password)
-    new_user = models.User(
-        name=user_data.name,
+
+    user = models.User(
+        full_name=user_data.full_name,
         email=user_data.email,
-        password=hashed_password,
+        password=hashed_password,   # store hashed password
         department=user_data.department,
-        role=user_role
     )
-    db.add(new_user)
+
+    db.add(user)
     db.commit()
-    db.refresh(new_user)
-    
-    access_token = create_access_token({"sub": new_user.email})
-    refresh_token = create_refresh_token({"sub": new_user.email})
-    
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    db.refresh(user)
+
+    access_token = create_access_token({"sub": user.email})
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": schemas.UserResponse.from_orm(user),
+    }
 
 @app.post("/api/auth/login", response_model=schemas.LoginResponse)
 def login(user_data: schemas.UserLogin, db: Session = Depends(get_db)):
