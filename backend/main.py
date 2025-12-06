@@ -10,7 +10,6 @@ import os
 import pytz
 from PIL import Image
 import io
-from seed_data import seed_everything
 from backend import models, schemas
 from backend.database import engine, get_db, Base
 from backend.auth import (
@@ -40,13 +39,6 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "BragBoard API is running", "docs": "/docs"}
-
-@app.post("/api/seed-db", tags=["Development"])
-def seed_database_endpoint(db: Session = Depends(get_db)):
-    """
-    Triggers the database seeding script.
-    """
-    return seed_everything(db)
 
 @app.post("/api/auth/register", response_model=schemas.LoginResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
