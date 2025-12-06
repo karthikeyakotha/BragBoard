@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://bragboard_db_whbd_user:rXOiIWao0pRg0HMRUuoGHdsaMJUMnv2o@dpg-d4pv2avdiees73900hbg-a/bragboard_db_whbd")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 
