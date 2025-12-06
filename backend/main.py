@@ -26,13 +26,13 @@ app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
 origins = [
     "http://localhost:5173",          # Vite dev (local)
-    "https://brag-board.vercel.app",  # your Vercel frontend
+    "https://brag-board.vercel.app", 
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,          # you use Authorization token; this is OK
+    allow_credentials=True,          
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -40,18 +40,6 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"message": "BragBoard API is running", "docs": "/docs"}
-
-@app.delete("/api/debug/clear-all")
-def clear_all(db: Session = Depends(get_db)):
-    # Delete all shoutouts, comments, notifications FIRST (if you have foreign key constraints)
-    db.query(models.Report).delete()
-    db.query(models.Comment).delete()
-    db.query(models.Shoutout).delete()
-    db.query(models.Notification).delete()
-    db.query(models.User).delete()   # delete users last
-    
-    db.commit()
-    return {"detail": "ALL DATA DELETED"}
 
 @app.post("/api/auth/register", response_model=schemas.LoginResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
