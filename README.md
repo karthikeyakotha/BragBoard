@@ -3,31 +3,19 @@
 ## Overview
 BragBoard is an internal employee recognition wall where employees can post shout-outs to appreciate their colleagues. It promotes a culture of recognition with tagging, reactions, commenting, and admin moderation.
 
+It is deployed at [https://brag-board.vercel.app/](https://brag-board.vercel.app/).
+
 **Status**: ✅ Complete and Ready  
 **Created**: October 25, 2025
 
 ## Tech Stack
-- **Frontend**: React 19 with Vite, Tailwind CSS 3, React Router, `react-hot-toast`
-- **Backend**: FastAPI (Python 3.11)
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: JWT tokens (access + refresh)
+-   **Frontend**: React + Vite, Tailwind CSS for styling, Axios for API calls
+-   **Backend**: FastAPI (Python) with SQLAlchemy ORM
+-   **Database**: PostgreSQL
+-   **Auth & Security**: JWT-based authentication, role-based access (admin / employee)
+-   **Other**: React Router for navigation, react-icons for UI icons
 
-## Project Structure
-```
-/backend          - FastAPI backend application
-  /models.py      - Database models (User, ShoutOut, Comment, Reaction)
-  /schemas.py     - Pydantic schemas for validation
-  /auth.py        - JWT authentication utilities
-  /main.py        - FastAPI application with all API endpoints
-  /database.py    - Database configuration
-  /uploads        - Directory for user profile pictures
 
-/frontend         - React frontend application
-  /src/pages      - Page components (Login, Register, Dashboard, AdminDashboard, Profile, UserProfile)
-  /src/components - Reusable components (ShoutoutCard, CreateShoutout, Layout, ReactionViewer)
-  /src/context    - Auth and Theme contexts for state management
-  /src/services   - API service layer
-```
 
 ## Database Schema
 - **Users**: id, name, email, password, department, role, joined_at, profile_picture_url
@@ -44,7 +32,7 @@ BragBoard is an internal employee recognition wall where employees can post shou
 ✅ Comment threads with timestamps and user avatars  
 ✅ Admin dashboard with statistics and moderation tools  
 ✅ User profile management (view, edit name/email, upload/delete profile picture)  
-✅ Clickable mentions in shoutouts leading to user profiles  
+✅ Email notifications for tagged users with a summary of shoutouts  
 ✅ Admin can delete any shout-out and comment  
 ✅ Users can delete their own shout-outs from their profile  
 ✅ First registered user automatically becomes admin  
@@ -53,9 +41,18 @@ BragBoard is an internal employee recognition wall where employees can post shou
 ✅ User management in Admin Dashboard (view, update role, delete users)
 
 ### UI/UX Improvements
-- **Consistent Deletion Flow**: Implemented a unified deletion process for shoutouts, comments, and users, ensuring a consistent user experience across the application.
-- **Confirmation Modals**: Added UI confirmation modals for all delete actions to prevent accidental data loss.
-- **Toast Notifications**: Integrated `react-hot-toast` to provide clear, non-intrusive feedback for successful or failed operations.
+-   Modern, dark-themed dashboard with clear typography and spacing
+-   Card-based layout for shout-outs with reactions, comments, and mentions
+-   Search & filter options (by department, sender, etc.) for easier browsing
+-   Responsive design so the app works on desktop and laptop resolutions
+-   Consistent button styles, hover states, and feedback to match the brand feel
+
+## Authentication Flow
+-   **Register**: New users sign up with name, email, password, and department
+-   **Login**: JWT access + refresh tokens issued on successful login
+-   **Protected Routes**: Dashboard, shout-out creation, and admin panel are accessible only to authenticated users
+-   **Role Handling**: First user becomes admin, others default to employee
+-   **Profile**: Users can view their profile, see their own shout-outs and activity (and later extend to editing profile details and avatar)
 
 ## Security Features
 - Passwords hashed with bcrypt
@@ -83,41 +80,21 @@ BragBoard is an internal employee recognition wall where employees can post shou
 8. **Manage Own Shoutouts**: Delete your own shoutouts from your profile page.
 
 ### Admin Features
-- Access admin dashboard from the main navigation (shield icon)
-- View platform statistics (users, shout-outs, comments, reactions)
-- See shout-out breakdown by department
-- Delete any shout-out or comment directly from the feed or user profiles.
-- **User Management**: View all users, update their roles (employee/admin), and delete user accounts.
+-   View all users and their departments
+-   Promote/demote users between employee and admin roles
+-   Delete inappropriate shout-outs or comments
+-   See high-level stats: total users, total shout-outs, comments, and reactions, plus department-wise activity
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-
-### Users
-- `GET /api/users` - Get all users (with optional department filter)
-- `GET /api/users/{id}` - Get specific user
-- `PATCH /api/users/me` - Update current user's profile (name, email)
-- `POST /api/users/me/picture` - Upload current user's profile picture (resizes to 128x128)
-- `DELETE /api/users/me/picture` - Delete current user's profile picture
-- `GET /api/users/me/shoutouts` - Get shoutouts sent by the current user
-- `DELETE /api/users/{id}` - Delete a user (admin only)
-
-### Shout-Outs
-- `POST /api/shoutouts` - Create new shout-out
-- `GET /api/shoutouts` - Get all shout-outs (with filters for department, sender, start_date)
-- `GET /api/shoutouts/{id}` - Get specific shout-out
-- `POST /api/shoutouts/{id}/comments` - Add comment
-- `POST /api/shoutouts/{id}/reactions` - Toggle reaction
-- `GET /api/shoutouts/{id}/reactions` - Get reactions for a specific shout-out
-- `DELETE /api/shoutouts/{id}` - Delete shout-out (admin or owner)
-- `DELETE /api/comments/{id}` - Delete comment (admin or owner)
-
-### Admin
-- `PATCH /api/users/{id}/role` - Update user role (admin only)
-- `GET /api/admin/stats` - Get platform statistics (admin only)
+## API Endpoints (Highlights)
+-   **POST /api/auth/register** – user registration
+-   **POST /api/auth/login** – login, returns JWT tokens
+-   **GET /api/auth/me** – current logged-in user
+-   **GET /api/users** – list users (with optional department filter)
+-   **GET /api/shoutouts** – list shout-outs (filters: department, sender, date)
+-   **POST /api/shoutouts** – create a shout-out with one or more recipients
+-   **POST /api/shoutouts/{id}/comments** – add a comment
+-   **POST /api/shoutouts/{id}/reactions** – toggle reactions (like / clap / star)
+-   **GET /api/admin/stats** – admin statistics overview
 
 ## Recent Changes
 - **2025-12-01**: Implemented consistent UI for deletions with confirmation modals and toast notifications.
@@ -138,7 +115,18 @@ BragBoard is an internal employee recognition wall where employees can post shou
 - **2025-10-25**: Configured workflows for backend (port 8000) and frontend (port 5000)
 
 ## Architecture
-The frontend (React) communicates with the FastAPI backend via REST APIs using JWT authorization headers. The backend uses SQLAlchemy ORM to interact with PostgreSQL database. The frontend proxies API requests through Vite to the backend on port 8000.
+
+### Frontend
+-   **pages/**: top-level screens like Login, Register, Dashboard
+-   **components/**: reusable UI pieces (ShoutOutCard, CreateShoutout, UserManagement, etc.)
+-   **context/**: Auth context for storing current user and tokens
+-   **services/**: API layer wrapping Axios calls
+
+### Backend
+-   **models.py**: SQLAlchemy models (User, ShoutOut, Comment, Reaction, etc.)
+-   **schemas.py**: Pydantic schemas for request/response validation
+-   **main.py**: FastAPI app, routes, and business logic
+-   **database.py**: engine, session, and Base configuration
 
 ## Environment Variables
 The following environment variables are automatically configured:
@@ -151,4 +139,7 @@ The following environment variables are automatically configured:
 - Frontend runs on port 5000
 - Vite dev server proxies `/api` requests to backend
 - Both workflows are configured and running
-- Swagger UI available at http://localhost:8000/docs for API testing
+- Swagger UI available for backend testing at https://bragboard-h7gw.onrender.com/docs
+
+## Deployment
+The application is deployed and accessible at: [https://brag-board.vercel.app/](https://brag-board.vercel.app/)
