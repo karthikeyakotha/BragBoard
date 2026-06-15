@@ -54,3 +54,6 @@ Thumbs.db
 .temp/
 temp_repo/
 
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep

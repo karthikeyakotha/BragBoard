@@ -40,7 +40,7 @@ export default function Dashboard() {
       if (filters.department) params.department = filters.department;
       if (filters.senderId) params.sender_id = filters.senderId;
       if (filters.startDate) params.start_date = filters.startDate;
-      
+
       const response = await shoutoutsAPI.getAll(params);
       setShoutouts(response.data);
     } catch (error) {
@@ -156,9 +156,8 @@ export default function Dashboard() {
     <>
       {(reportMessage || reportError) && (
         <div
-          className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white ${
-            reportError ? 'bg-red-500' : 'bg-green-500'
-          }`}
+          className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white ${reportError ? 'bg-red-500' : 'bg-green-500'
+            }`}
         >
           {reportMessage || reportError}
         </div>

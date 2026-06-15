@@ -31,7 +31,7 @@ export default function Login() {
         <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
           Welcome to BragBoard
         </h2>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 dark:bg-red-900 dark:text-red-300 dark:border-red-700">
             {error}

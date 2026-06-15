@@ -53,7 +53,7 @@ const Profile = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     const { name, current_password, new_password, confirm_password } = formData;
-    
+
     let updateData = { name };
 
     if (new_password) {
@@ -92,7 +92,7 @@ const Profile = () => {
         setUser(res.data);
       } catch (error) {
         console.error('Failed to upload profile picture:', error);
-      } 
+      }
     }
   };
 
@@ -211,21 +211,19 @@ const Profile = () => {
           <div className="flex border-b border-gray-300 dark:border-gray-700 mb-4">
             <button
               onClick={() => setActiveTab('my-shoutouts')}
-              className={`py-2 px-4 text-lg font-medium ${
-                activeTab === 'my-shoutouts'
+              className={`py-2 px-4 text-lg font-medium ${activeTab === 'my-shoutouts'
                   ? 'border-b-2 border-blue-500 text-blue-500'
                   : 'text-gray-600 dark:text-gray-300'
-              }`}
+                }`}
             >
               My Shoutouts
             </button>
             <button
               onClick={() => setActiveTab('tagged-me')}
-              className={`py-2 px-4 text-lg font-medium ${
-                activeTab === 'tagged-me'
+              className={`py-2 px-4 text-lg font-medium ${activeTab === 'tagged-me'
                   ? 'border-b-2 border-blue-500 text-blue-500'
                   : 'text-gray-600 dark:text-gray-300'
-              }`}
+                }`}
             >
               Tagged Me
             </button>
@@ -283,9 +281,9 @@ const Profile = () => {
               </div>
 
               <hr className="my-6 border-gray-300 dark:border-gray-600" />
-              
+
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Change Password</h3>
-              
+
               <div className="mb-4">
                 <label
                   htmlFor="current_password"

@@ -265,11 +265,10 @@ export default function AdminDashboard() {
               <button
                 key={status}
                 onClick={() => handleReportFilterChange(status)}
-                className={`px-3 py-1 rounded-full border ${
-                  reportStatusFilter === status
+                className={`px-3 py-1 rounded-full border ${reportStatusFilter === status
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-gray-100 text-gray-700 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600'
-                }`}
+                  }`}
               >
                 {status === 'all'
                   ? 'All'
