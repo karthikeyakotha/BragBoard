@@ -24,8 +24,11 @@ app = FastAPI(title="BragBoard API", version="1.0.0")
 app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 
 origins = [
-    "http://localhost:5173",          # Vite dev (local)
-    "https://brag-board.vercel.app", 
+    "http://localhost:5000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5000",
+    "http://127.0.0.1:5173",
+    "https://brag-board.vercel.app",
 ]
 
 app.add_middleware(
@@ -61,9 +64,11 @@ def register(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(user)
 
     access_token = create_access_token({"sub": user.email})
+    refresh_token = create_refresh_token({"sub": user.email})
 
     return {
         "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
         "user": schemas.UserResponse.from_orm(user),
     }
@@ -78,9 +83,11 @@ def login(user_data: schemas.UserLogin, db: Session = Depends(get_db)):
         )
     
     access_token = create_access_token({"sub": user.email})
+    refresh_token = create_refresh_token({"sub": user.email})
     
     return {
-        "access_token": access_token, 
+        "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
         "user": schemas.UserResponse.from_orm(user)
     }

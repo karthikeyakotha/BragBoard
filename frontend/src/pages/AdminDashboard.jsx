@@ -306,7 +306,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {reports.map((report) => {
-                  const { id, comment_id, reason, reported_by, status, created_at, shoutout_id } = report;
+                  const { id, comment_id, reason, reported_by, status, created_at } = report;
 
                   return (
                     <tr key={id} className="border-b last:border-0">
