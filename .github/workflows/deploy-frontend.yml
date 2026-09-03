@@ -39,7 +39,7 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         env:
-          VITE_API_URL: https://bragboard-h7gw.onrender.com
+          VITE_API_URL: https://bragboard-h7gw.onrender.comhttps://bragboard-backend-xt64.onrender.com
         run: npm run build
 
       - name: Configure Pages
