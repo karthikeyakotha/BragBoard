@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
@@ -96,14 +96,14 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthProvider>
         <ThemeProvider>
           <AppRoutes />
           <Toaster position="top-right" />
         </ThemeProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
